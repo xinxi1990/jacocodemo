@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">com.weex.jasso.utils</a> &gt; <span class="el_source">FileUtil.java</span></div><h1>FileUtil.java</h1><pre class="source lang-java linenums">package com.weex.jasso.utils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+/**
+ * Created by SolveException on 2017/7/5.
+ */
+
+<span class="nc" id="L12">public class FileUtil {</span>
+    public static void createFile(String path){
+<span class="nc" id="L14">        createFile(path,null);</span>
+<span class="nc" id="L15">    }</span>
+
+    public static void createFile(String path,String fileName){
+<span class="nc" id="L18">        File file =null;</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (path==null){</span>
+<span class="nc" id="L20">            new Exception(&quot;path no null&quot;);</span>
+        }
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (fileName==null){</span>
+<span class="nc" id="L23">            file = new File(path);</span>
+        }else {
+<span class="nc" id="L25">            file=new File(path,fileName);</span>
+        }
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (!file.exists()) {</span>
+            try {
+<span class="nc" id="L29">                file.createNewFile();</span>
+<span class="nc" id="L30">            } catch (IOException e) {</span>
+<span class="nc" id="L31">                e.printStackTrace();</span>
+<span class="nc" id="L32">            }</span>
+        }
+<span class="nc" id="L34">    }</span>
+
+    public static void writeCoverageReport(String path,String fileName){
+<span class="nc" id="L37">        OutputStream out = null;</span>
+<span class="nc" id="L38">        String filePath=path+fileName;</span>
+        try {
+<span class="nc" id="L40">            out = new FileOutputStream(filePath, false);</span>
+<span class="nc" id="L41">            Object agent = Class.forName(&quot;org.jacoco.agent.rt.RT&quot;)</span>
+<span class="nc" id="L42">                    .getMethod(&quot;getAgent&quot;)</span>
+<span class="nc" id="L43">                    .invoke(null);</span>
+
+<span class="nc" id="L45">            out.write((byte[]) agent.getClass().getMethod(&quot;getExecutionData&quot;, boolean.class)</span>
+<span class="nc" id="L46">                    .invoke(agent, false));</span>
+<span class="nc" id="L47">        } catch (Exception e) {</span>
+//            Log.d(TAG, e.toString(), e);
+        } finally {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            if (out != null) {</span>
+                try {
+<span class="nc" id="L52">                    out.close();</span>
+<span class="nc" id="L53">                } catch (IOException e) {</span>
+<span class="nc" id="L54">                    e.printStackTrace();</span>
+<span class="nc" id="L55">                }</span>
+            }
+        }
+<span class="nc" id="L58">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201802231233</span></div></body></html>

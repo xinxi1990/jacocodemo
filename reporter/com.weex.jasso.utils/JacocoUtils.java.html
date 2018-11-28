@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JacocoUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">com.weex.jasso.utils</a> &gt; <span class="el_source">JacocoUtils.java</span></div><h1>JacocoUtils.java</h1><pre class="source lang-java linenums">package com.weex.jasso.utils;
+
+import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+<span class="nc" id="L10">public class JacocoUtils {</span>
+
+<span class="fc" id="L12">    static String TAG = &quot;JacocoUtils&quot;;</span>
+
+    //ec文件的路径
+<span class="fc" id="L15">    private static String DEFAULT_COVERAGE_FILE_PATH = &quot;/sdcard/jacoco/coverage.ec&quot;;</span>
+
+    /**
+     * 生成ec文件
+     *
+     * @param isNew 是否重新创建ec文件
+     */
+    public static void generateEcFile(boolean isNew) {
+//        String DEFAULT_COVERAGE_FILE_PATH = NLog.getContext().getFilesDir().getPath().toString() + &quot;/coverage.ec&quot;;
+<span class="fc" id="L24">        Log.d(TAG, &quot;生成覆盖率文件: &quot; + DEFAULT_COVERAGE_FILE_PATH);</span>
+<span class="fc" id="L25">        OutputStream out = null;</span>
+<span class="fc" id="L26">        File mCoverageFilePath = new File(DEFAULT_COVERAGE_FILE_PATH);</span>
+        try {
+<span class="pc bpc" id="L28" title="2 of 4 branches missed.">            if (isNew &amp;&amp; mCoverageFilePath.exists()) {</span>
+<span class="nc" id="L29">                Log.d(TAG, &quot;JacocoUtils_generateEcFile: 清除旧的ec文件&quot;);</span>
+<span class="nc" id="L30">                mCoverageFilePath.delete();</span>
+            }
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">            if (!mCoverageFilePath.exists()) {</span>
+<span class="fc" id="L33">                mCoverageFilePath.createNewFile();</span>
+            }
+<span class="fc" id="L35">            out = new FileOutputStream(mCoverageFilePath.getPath(), true);</span>
+
+<span class="fc" id="L37">            Object agent = Class.forName(&quot;org.jacoco.agent.rt.RT&quot;)</span>
+<span class="fc" id="L38">                    .getMethod(&quot;getAgent&quot;)</span>
+<span class="fc" id="L39">                    .invoke(null);</span>
+
+<span class="pc" id="L41">            out.write((byte[]) agent.getClass().getMethod(&quot;getExecutionData&quot;, boolean.class)</span>
+<span class="nc" id="L42">                    .invoke(agent, false));</span>
+<span class="nc" id="L43">            Log.d(TAG,&quot;写入&quot; + DEFAULT_COVERAGE_FILE_PATH + &quot;完成!&quot; );</span>
+<span class="nc" id="L44">        } catch (Exception e) {</span>
+<span class="nc" id="L45">            Log.e(TAG, &quot;generateEcFile: &quot; + e.getMessage());</span>
+<span class="nc" id="L46">            Log.e(TAG,e.toString());</span>
+        } finally {
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            if (out == null)</span>
+<span class="nc" id="L49">                return;</span>
+            try {
+<span class="nc" id="L51">                out.close();</span>
+<span class="nc" id="L52">            } catch (IOException e) {</span>
+<span class="nc" id="L53">                e.printStackTrace();</span>
+
+<span class="nc" id="L55">            }</span>
+        }
+<span class="nc" id="L57">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201802231233</span></div></body></html>
